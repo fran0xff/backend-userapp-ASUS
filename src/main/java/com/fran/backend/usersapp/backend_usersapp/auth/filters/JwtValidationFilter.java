@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fran.backend.usersapp.backend_usersapp.auth.SimpleGrantedAuthorityJsonCreator;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -68,6 +69,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
 
             Collection<? extends GrantedAuthority> authorities = Arrays
             .asList(new ObjectMapper()
+            .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
                             .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class)); // convertir a List<GrantedAuthority>
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null,
