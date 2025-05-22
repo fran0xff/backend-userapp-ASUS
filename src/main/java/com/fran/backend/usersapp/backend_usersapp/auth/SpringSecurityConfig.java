@@ -38,6 +38,11 @@ public class SpringSecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyRole("ADMIN", "USER")
+                .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
+                .requestMatchers("/users/**").hasRole("ADMIN")
+                //.requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole("ADMIN")
+                //.requestMatchers(HttpMethod.PUT, "/users/{id}").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
