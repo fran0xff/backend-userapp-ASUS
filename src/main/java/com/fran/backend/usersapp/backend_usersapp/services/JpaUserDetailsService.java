@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fran.backend.usersapp.backend_usersapp.repositories.UserRepository;
 
+
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
@@ -48,3 +49,4 @@ public class JpaUserDetailsService implements UserDetailsService {
     }
 
 }
+

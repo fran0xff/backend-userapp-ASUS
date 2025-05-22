@@ -13,8 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
+
 import com.fran.backend.usersapp.backend_usersapp.auth.filters.JwtAuthenticationFilter;
 import com.fran.backend.usersapp.backend_usersapp.auth.filters.JwtValidationFilter;
+
 
 @Configuration
 public class SpringSecurityConfig {

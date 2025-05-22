@@ -25,7 +25,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 import static com.fran.backend.usersapp.backend_usersapp.auth.TokenJwtConfig.SECRET_KEY;
 import static com.fran.backend.usersapp.backend_usersapp.auth.TokenJwtConfig.HEADER_AUTHORIZATION;
 import static com.fran.backend.usersapp.backend_usersapp.auth.TokenJwtConfig.PREFIX_TOKEN;
@@ -62,7 +61,9 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
                     .getBody();
             
             String username = claims.getSubject();
-            //Object username2 = claims.get("username");
+            Object username2 = claims.get("username");
+            System.out.println(username);
+            System.out.println(username2);
 
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

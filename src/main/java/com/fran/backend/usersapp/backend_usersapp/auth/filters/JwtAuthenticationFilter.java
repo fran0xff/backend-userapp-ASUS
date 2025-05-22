@@ -14,12 +14,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fran.backend.usersapp.backend_usersapp.models.entities.User;
 
-import io.jsonwebtoken.Jwts;
-
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +29,7 @@ import static com.fran.backend.usersapp.backend_usersapp.auth.TokenJwtConfig.SEC
 import static com.fran.backend.usersapp.backend_usersapp.auth.TokenJwtConfig.HEADER_AUTHORIZATION;
 import static com.fran.backend.usersapp.backend_usersapp.auth.TokenJwtConfig.PREFIX_TOKEN;
 
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
@@ -45,7 +44,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User user = null;
         String username = null;
         String password = null;
-        
+
         try {
             user = new ObjectMapper().readValue(request.getInputStream(), User.class);
             username = user.getUsername();
@@ -102,6 +101,5 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setStatus(401);
         response.setContentType("application/json");
     }
-    
-}
 
+}
