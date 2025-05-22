@@ -1,9 +1,9 @@
 package com.fran.backend.usersapp.backend_usersapp.auth.filters;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -60,13 +60,15 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             .parseClaimsJws(token)
                     .getBody();
             
+            Object authoritiesClaims = claims.get("authorities");//
             String username = claims.getSubject();
             Object username2 = claims.get("username");
             System.out.println(username);
             System.out.println(username2);
 
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            Collection<? extends GrantedAuthority> authorities = Arrays
+            .asList(new ObjectMapper()
+                            .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class)); // convertir a List<GrantedAuthority>
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null,
                     authorities);
