@@ -5,8 +5,6 @@ import com.fran.backend.usersapp.backend_usersapp.models.entities.User;
 
 public class DtoMapperUser {
 
-    private static DtoMapperUser mapper;
-
     private User user;
 
     private DtoMapperUser() {
@@ -14,13 +12,12 @@ public class DtoMapperUser {
     }
 
     public static DtoMapperUser builder() {
-        mapper = new DtoMapperUser();
-        return mapper;
+        return new DtoMapperUser();
     }
 
     public DtoMapperUser setUser(User user) {
         this.user = user;
-        return mapper;
+        return this;
     }
 
     public UserDto build() {
