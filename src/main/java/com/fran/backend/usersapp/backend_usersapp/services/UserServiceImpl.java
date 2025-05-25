@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fran.backend.usersapp.backend_usersapp.models.IUser;
 import com.fran.backend.usersapp.backend_usersapp.models.dto.UserDto;
 import com.fran.backend.usersapp.backend_usersapp.models.dto.mapper.DtoMapperUser;
 import com.fran.backend.usersapp.backend_usersapp.models.entities.Role;
@@ -57,12 +58,8 @@ public class UserServiceImpl implements UserService {
     public UserDto save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Optional<Role> o = roleRepository.findByName("ROLE_USER");
-        
-        List<Role> roles = new ArrayList<>();
-        if (o.isPresent()) {
-            roles.add(o.orElseThrow());
-        }
+        List<Role> roles = getRoles(user);
+
         user.setRoles(roles);
         //return repository.save(user);
         return DtoMapperUser.builder().setUser(repository.save(user)).build(); 
@@ -74,7 +71,9 @@ public class UserServiceImpl implements UserService {
         Optional<User> o = repository.findById(id);
         User userOptional = null;
         if (o.isPresent()) {
+           List<Role> roles = getRoles(user);
             User userDb = o.orElseThrow();
+            userDb.setRoles(roles);
             userDb.setUsername(user.getUsername());
             userDb.setEmail(user.getEmail());
             userOptional = repository.save(userDb);
@@ -86,6 +85,24 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void remove(Long id) {
         repository.deleteById(id);
+    }
+
+    private List<Role> getRoles(IUser user) {
+
+        Optional<Role> o = roleRepository.findByName("ROLE_USER");
+        
+        List<Role> roles = new ArrayList<>();
+        if (o.isPresent()) {
+            roles.add(o.orElseThrow());
+        }
+        // If the user is an admin, add the admin role
+        if (user.isAdmin()) {
+            Optional<Role> oAdmin = roleRepository.findByName("ROLE_ADMIN");
+            if (oAdmin.isPresent()) {
+                roles.add(oAdmin.orElseThrow());
+            }
+        }
+        return roles;
     }
     
 }
