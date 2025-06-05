@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -36,9 +39,19 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> list() {
+        // try {
+        //     Thread.sleep(2000l); // Simulate a delay for security reasons
+                    
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
         return service.findAll();
     }
-
+    @GetMapping("/page/{page}")
+    public Page<UserDto> list(@PathVariable Integer page) {
+        Pageable pageable = PageRequest.of(page, 3);
+        return service.findAll(pageable);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
         Optional<UserDto> userOptionl = service.findById(id);

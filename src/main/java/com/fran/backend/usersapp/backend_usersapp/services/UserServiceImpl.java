@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,21 @@ public class UserServiceImpl implements UserService {
         
         //return (List<User>) repository.findAll();
     }
+
+    
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<UserDto> findAll(Pageable pageable) {
+
+        Page<User> usersPage = repository.findAll(pageable);
+        return usersPage
+            .map(user -> DtoMapperUser.builder().setUser(user).build());
+    }
+
+
+
+
 
     @Override
     @Transactional(readOnly = true)
